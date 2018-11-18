@@ -1,0 +1,90 @@
+<div class="container-fluid">
+    <div class="row" style="height: 50px;">
+        <nav class="navbar navbar-inverse" style="background-color: #ffffff; border: 0;">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="border: 0; background-color: #ffffff;">
+                            <span class="icon-bar" style="background-color: #000000;"></span>
+                            <span class="icon-bar" style="background-color: #000000;"></span>
+                            <span class="icon-bar" style="background-color: #000000;"></span>                        
+                        </button>
+                        <a class="navbar-brand" href="#">
+                            <img src="../../../assets/logo.svg" style="height: 35px; width: auto;">
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                    </div>
+                </div>
+        </nav>
+    </div>
+    <div class="row" style="background-color: #eeeeee; height: 35px;">
+        <div class="col-md-4 text-center"> 
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                <input 
+                    #query
+                    (keyup)="filter(query.value)"
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Search by name"
+                    style="width: 100%;">
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <p style="margin-top: 10px">Total Likes: {{ totalLikes }} &nbsp;&nbsp;&nbsp; <span>API Hits: {{ totalHitsAPI }}</span></p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Sort By:</span>
+                    <select 
+                        class="form-control" 
+                        id="sort" 
+                        (change)="sort(sortBy)"
+                        name="sortBy"
+                        [(ngModel)]="sortBy">
+                        <option value="select" disabled>Select</option>
+                        <option value="ratings">Ratings</option>
+                        <option value="likes">Likes</option>
+                    </select>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;" *ngIf="wonderOfWorld?.length>0; else noData">
+        <div class="col-md-6" *ngFor="let wow of wonderOfWorld; let i = index">
+            <div class="col-md-12 image" style="padding: 0; margin-bottom: 30px;">
+                <img [src]="wow.imageURL" style="width: 100%;">
+                    <div class="content">
+                        <p>
+                            <span *ngFor="let s of wow.star">
+                                <i class="{{ s }}"></i>
+                            </span>
+                            <span class="name" style="float: right;">
+                                {{ wow.place }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="overlay">
+                        <div class="col-md-12 text-right" style="margin-top: 20px;">
+                            <span (click)="toggleLike(wow.updatedLikes, wow.likes, wow.id, i)"
+                                class="glyphicon glyphicon-heart gly-heart"></span>&nbsp;&nbsp;
+                                    <span 
+                                        style="font-size: 18px;"
+                                        [ngStyle]="{'color': wow.updatedLikes == wow.likes ? 'grey' : 'green'}">{{ wow.updatedLikes }}</span>
+                        </div>
+                        <div class="text">
+                            <h3 style="text-align: center;">{{ wow.place }}</h3>
+                            {{ wow.description }}
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <ng-template #noData>
+        <div class="row">
+            <p>Sorry no data found</p>
+        </div>
+    </ng-template>
+</div>
+
